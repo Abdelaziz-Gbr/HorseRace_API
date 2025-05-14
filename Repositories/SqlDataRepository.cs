@@ -58,7 +58,7 @@ namespace HorseRace_API.Repositories
             return lookUpValue;
         }
 
-        public async Task<LookUpType> GetByIdAsync(Guid lookUpTypeId) => await dbContext.LookUpTypes.FirstOrDefaultAsync(it => it.Id == lookUpTypeId);
+        public async Task<LookUpType> GetByIdAsync(Guid lookUpTypeId) => await dbContext.LookUpTypes.Include(it => it.Values).FirstOrDefaultAsync(it => it.Id == lookUpTypeId);
 
         public async Task<List<LookUpType>> GetLookUpTypesAsync()
         {

@@ -21,6 +21,11 @@ namespace HorseRace_API.Repositories
             return user;
         }
 
+        public Task<User> DeleteUserAsync(Guid user_id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<User> getUserAsync(UserCredintials userCredintials)
         {
             var user = await authDb.Users.FirstOrDefaultAsync(x => x.Email == userCredintials.Email);
@@ -29,6 +34,16 @@ namespace HorseRace_API.Repositories
                 throw new Exception("User Not Found");
             }
             return user;
+        }
+
+        public Task<List<User>> getUsersAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> UpdateUserAsync(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }

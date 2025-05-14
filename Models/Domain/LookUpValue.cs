@@ -17,7 +17,6 @@ namespace HorseRace_API.Models.Domain
 
         public void Update(UpdateLookUpValue updateLookUpValue)
         {
-            LookUpTypeId = updateLookUpValue.LookUpTypeId;
             Value = updateLookUpValue.Value;
             UpdatedAt = DateTime.Now;
         }

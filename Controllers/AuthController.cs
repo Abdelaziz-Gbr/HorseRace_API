@@ -1,4 +1,5 @@
 ﻿using HorseRace_API.Models.Dto;
+using HorseRace_API.Repositories;
 using HorseRace_API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -11,13 +12,14 @@ namespace HorseRace_API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
+        private readonly IAuthRepository authRepository;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IAuthRepository authRepository)
         {
             this.authService = authService;
+            this.authRepository = authRepository;
         }
         [HttpPost]
-        [Route("Register")]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> RegisterUser([FromBody] UserRegisteration userInfo)
         {
@@ -28,6 +30,15 @@ namespace HorseRace_API.Controllers
             }
             return Ok();
         }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> GetAllUsers()
+        {
+            var users = await authRepository.getUsersAsync();
+            return Ok(users);
+        }
+
 
         [HttpPost]
         [Route("Login")]
