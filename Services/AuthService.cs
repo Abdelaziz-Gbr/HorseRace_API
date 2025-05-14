@@ -63,7 +63,7 @@ namespace HorseRace_API.Services
                 throw new Exception("Password Incorrect");
             }
             // generate token
-            return $"key:{GenerateJwtToken(userDomain)}";
+            return $"bearer {GenerateJwtToken(userDomain)}";
         }
 
         private string HashPassword(string password)

@@ -9,6 +9,8 @@ namespace HorseRace_API.Data
         {
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<LookUpType> LookUpTypes { get; set; }
+        public DbSet<LookUpValue> LookUpValues { get; set; }
 
     }
 }

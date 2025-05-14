@@ -4,6 +4,7 @@ using HorseRace_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HorseRace_API.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250514141529_added lookup tables")]
+    partial class addedlookuptables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,7 +41,7 @@ namespace HorseRace_API.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("Customers", (string)null);
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("HorseRace_API.Models.Domain.LookUpType", b =>
@@ -59,7 +62,7 @@ namespace HorseRace_API.Migrations.ApplicationDb
 
                     b.HasKey("Id");
 
-                    b.ToTable("LookUpTypes", (string)null);
+                    b.ToTable("LookUpTypes");
                 });
 
             modelBuilder.Entity("HorseRace_API.Models.Domain.LookUpValue", b =>
@@ -85,7 +88,7 @@ namespace HorseRace_API.Migrations.ApplicationDb
 
                     b.HasIndex("LookUpTypeId");
 
-                    b.ToTable("LookUpValues", (string)null);
+                    b.ToTable("LookUpValues");
                 });
 
             modelBuilder.Entity("HorseRace_API.Models.Domain.LookUpValue", b =>
