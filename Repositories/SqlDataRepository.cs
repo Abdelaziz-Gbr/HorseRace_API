@@ -58,14 +58,24 @@ namespace HorseRace_API.Repositories
             return lookUpValue;
         }
 
+       /* public async Task<List<LookUpValue>> GetAttachedValues(Guid lookUpTypeId)
+        {
+            var values = await dbContext.LookUpValues.FindAsync(X)
+        }*/
+
         public async Task<List<LookUpType>> GetLookUpTypesAsync()
         {
-            return await dbContext.LookUpTypes.Include("Values").ToListAsync();
+            return await dbContext.LookUpTypes.ToListAsync();
         }
 
         public async Task<List<LookUpValue>> GetLookUpValuesAsync()
         {
             return await dbContext.LookUpValues.ToListAsync();
+        }
+
+        public Task<List<LookUpType>> GetType(Guid lookUpValueId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<LookUpType> UpdateLookUpTypeAsync(UpdateLookUpType updateLookUpType)

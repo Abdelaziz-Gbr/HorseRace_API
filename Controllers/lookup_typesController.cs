@@ -54,5 +54,12 @@ namespace HorseRace_API.Controllers
             var deletedLookUp = await dataRepository.DeleteLookUpTypeAsync(LookUpTypeId);
             return Ok(deletedLookUp);
         }
+
+       /* [HttpGet]
+        [Route("{id:guid}")]
+        public async Task<ActionResult> GetValuesForAspcificType([FromRoute] Guid id)
+        {
+
+        }*/
     }
 }

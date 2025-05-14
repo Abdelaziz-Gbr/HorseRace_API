@@ -5,7 +5,7 @@ namespace HorseRace_API.Models.Domain
 {
     public class LookUpValue
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [Required]
         public Guid LookUpTypeId { get; set; }
         public LookUpType lookUpType { get; set; }
