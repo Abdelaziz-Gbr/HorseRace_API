@@ -11,7 +11,7 @@ namespace HorseRace_API.Repositories
         public Task<LookUpType> UpdateLookUpTypeAsync(UpdateLookUpType lookUpType);
         public Task<LookUpType> DeleteLookUpTypeAsync(Guid lookUpTypeId);
         public Task<LookUpType> AddLookUpTypeAsync(LookUpType lookUpType);
-        /*public Task<List<LookUpValue>> GetAttachedValues(Guid lookUpTypeId);*/
+        public Task<LookUpType> GetByIdAsync(Guid lookUpTypeId);
 
         public Task<List<LookUpValue>> GetLookUpValuesAsync();
         public Task<LookUpValue> UpdateLookUpValuesAsync(UpdateLookUpValue lookUpValue);

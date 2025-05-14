@@ -55,11 +55,12 @@ namespace HorseRace_API.Controllers
             return Ok(deletedLookUp);
         }
 
-       /* [HttpGet]
+        [HttpGet]
         [Route("{id:guid}")]
-        public async Task<ActionResult> GetValuesForAspcificType([FromRoute] Guid id)
+        public async Task<ActionResult> GetLookUpTypeById([FromRoute] Guid id)
         {
-
-        }*/
+            var item = await dataRepository.GetByIdAsync(id);
+            return Ok(item);
+        }
     }
 }

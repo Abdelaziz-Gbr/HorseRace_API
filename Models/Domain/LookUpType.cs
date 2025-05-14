@@ -10,7 +10,7 @@ namespace HorseRace_API.Models.Domain
         public string Name { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
-        public ICollection<LookUpValue> Values { get; set; } = new List<LookUpValue>();
+        public ICollection<LookUpValue> Values { get; set; }
 
         public void Update(UpdateLookUpType newLookUpType)
         {
