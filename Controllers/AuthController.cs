@@ -1,4 +1,5 @@
-﻿using HorseRace_API.Models.Dto;
+﻿using AutoMapper;
+using HorseRace_API.Models.Dto;
 using HorseRace_API.Repositories;
 using HorseRace_API.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -13,22 +14,32 @@ namespace HorseRace_API.Controllers
     {
         private readonly IAuthService authService;
         private readonly IAuthRepository authRepository;
+        private readonly IMapper mapper;
 
-        public AuthController(IAuthService authService, IAuthRepository authRepository)
+        public AuthController(IAuthService authService, IAuthRepository authRepository, IMapper mapper)
         {
             this.authService = authService;
             this.authRepository = authRepository;
+            this.mapper = mapper;
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> RegisterUser([FromBody] UserRegisteration userInfo)
         {
-            var user = await authService.SaveUserAsync(userInfo);
-            if (user == null)
+            var newUser = await authService.SaveUserAsync(userInfo);
+            if (newUser == null)
             {
                 return BadRequest("Invalid Data");
             }
-            return Ok();
+            return Ok(
+                new
+            {
+                message = "user registered successfuly",
+                date = new
+                {
+                    user = mapper.Map<UserDto>(newUser)
+                }
+            });
         }
 
         [HttpGet]
@@ -36,14 +47,47 @@ namespace HorseRace_API.Controllers
         public async Task<ActionResult> GetAllUsers()
         {
             var users = await authRepository.getUsersAsync();
-            return Ok(users);
+            return Ok(new
+            {
+                message = "success",
+                data = new
+                {
+                    users = mapper.Map<List<UserDto>>(users)
+                }
+            });
         }
 
         [HttpPut]
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> UpdateUser([FromBody] UpdateUser updateUser)
         {
-            return BadRequest();
+            var updatedUser = await authRepository.UpdateUserAsync(updateUser);
+            return Ok(
+                new {
+                    message = "user updated successfuly",
+                    data = new {
+                    user = mapper.Map<UserDto>(updatedUser)
+                    }
+                });
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> DeleteUser([FromBody] Guid user_id)
+        {
+            var deletedUser = await authRepository.DeleteUserAsync(user_id);
+            if (deletedUser == null)
+            {
+                return BadRequest("user not found");
+            }
+            return Ok(new
+            {
+                message = "user deleted successfuly",
+                date = new
+                {
+                    user = mapper.Map<UserDto>(deletedUser)
+                }
+            });
         }
 
 
@@ -51,6 +95,14 @@ namespace HorseRace_API.Controllers
         [Route("Login")]
         public async Task<ActionResult> LogUserIn([FromBody] UserCredintials userCredintials)
         {
+            var user = await authRepository.getUserAsync(userCredintials);
+            if(user == null)
+            {
+                return BadRequest(
+                    new {
+                        message = "User not found"
+                    });
+            }
             var secureKey = await authService.GetUserTokenAsync(userCredintials);
             if (secureKey == null)
             {
@@ -59,7 +111,9 @@ namespace HorseRace_API.Controllers
             return Ok(
                 new {
                     message = "log in success", 
-                    data = new {access_token = secureKey
+                    data = new {
+                        access_token = secureKey,
+                        user = mapper.Map<UserDto>(user)
                     } 
                 });
         }

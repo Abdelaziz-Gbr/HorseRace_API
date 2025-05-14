@@ -1,4 +1,5 @@
 using HorseRace_API.Data;
+using HorseRace_API.Mappings;
 using HorseRace_API.Repositories;
 using HorseRace_API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -53,6 +54,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("MainDbConnection
 builder.Services.AddScoped<IAuthRepository, SqlAuthRepository>();
 builder.Services.AddScoped<IDataRepository, SqlDataRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

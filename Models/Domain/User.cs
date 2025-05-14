@@ -1,4 +1,7 @@
-﻿namespace HorseRace_API.Models.Domain
+﻿using HorseRace_API.Helpers;
+using HorseRace_API.Models.Dto;
+
+namespace HorseRace_API.Models.Domain
 {
     public class User
     {
@@ -10,5 +13,11 @@
         public bool Active { get; set; } = true;
         public String Role { get; set; } = "customer";
 
+        internal void Update(UpdateUser updateUser)
+        {
+            Email = updateUser.Email;
+            HashedPassword = PasswordHasher.HashPassword(updateUser.Password);
+            Active = updateUser.Active;
+        }
     }
 }

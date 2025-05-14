@@ -21,9 +21,16 @@ namespace HorseRace_API.Repositories
             return user;
         }
 
-        public Task<User> DeleteUserAsync(Guid user_id)
+        public async Task<User> DeleteUserAsync(Guid user_id)
         {
-            throw new NotImplementedException();
+            var user = await authDb.Users.FirstOrDefaultAsync(it => it.Id == user_id);
+            if (user == null)
+            {
+                throw new Exception("Not Found");
+            }
+            authDb.Users.Remove(user);
+            await authDb.SaveChangesAsync();
+            return user;
         }
 
         public async Task<User> getUserAsync(UserCredintials userCredintials)
@@ -41,9 +48,16 @@ namespace HorseRace_API.Repositories
             return await authDb.Users.ToListAsync();
         }
 
-        public Task<User> UpdateUserAsync(User user)
+        public async Task<User> UpdateUserAsync(UpdateUser updateUser)
         {
-            throw new NotImplementedException();
+            var user = await authDb.Users.FirstOrDefaultAsync(it => it.Id == updateUser.Id);
+            if( user == null )
+            {
+                throw new Exception("Not Found");
+            }
+            user.Update(updateUser);
+            await authDb.SaveChangesAsync();
+            return user;
         }
     }
 }

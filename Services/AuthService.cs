@@ -1,4 +1,5 @@
-﻿using HorseRace_API.Models.Domain;
+﻿using HorseRace_API.Helpers;
+using HorseRace_API.Models.Domain;
 using HorseRace_API.Models.Dto;
 using HorseRace_API.Repositories;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
@@ -25,7 +26,7 @@ namespace HorseRace_API.Services
 
         public async Task<User> SaveUserAsync(UserRegisteration userInfo)
         {
-            var hashedPassword = HashPassword(userInfo.Password);
+            var hashedPassword = PasswordHasher.HashPassword(userInfo.Password);
 
             var user = new User
             {
@@ -58,46 +59,12 @@ namespace HorseRace_API.Services
                 throw new Exception("User Not Found");
             }
 
-            if (!VerifyPassword(userCredintials.Password, userDomain.HashedPassword))
+            if (!PasswordHasher.VerifyPassword(userCredintials.Password, userDomain.HashedPassword))
             {
                 throw new Exception("Password Incorrect");
             }
             // generate token
             return $"bearer {GenerateJwtToken(userDomain)}";
-        }
-
-        private string HashPassword(string password)
-        {
-            byte[] salt = new byte[16];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-
-            byte[] hash = KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 10000,
-                numBytesRequested: 32);
-
-            return Convert.ToBase64String(salt) + "." + Convert.ToBase64String(hash);
-        }
-
-        private bool VerifyPassword(string password, string storedHash)
-        {
-            var parts = storedHash.Split('.');
-            byte[] salt = Convert.FromBase64String(parts[0]);
-            byte[] storedHashBytes = Convert.FromBase64String(parts[1]);
-
-            byte[] hash = KeyDerivation.Pbkdf2(
-                password: password,
-                salt: salt,
-                prf: KeyDerivationPrf.HMACSHA256,
-                iterationCount: 10000,
-                numBytesRequested: 32);
-
-            return hash.SequenceEqual(storedHashBytes);
         }
 
         private string GenerateJwtToken(User user)
