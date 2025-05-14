@@ -91,31 +91,5 @@ namespace HorseRace_API.Controllers
         }
 
 
-        [HttpPost]
-        [Route("Login")]
-        public async Task<ActionResult> LogUserIn([FromBody] UserCredintials userCredintials)
-        {
-            var user = await authRepository.getUserAsync(userCredintials);
-            if(user == null)
-            {
-                return BadRequest(
-                    new {
-                        message = "User not found"
-                    });
-            }
-            var secureKey = await authService.GetUserTokenAsync(userCredintials);
-            if (secureKey == null)
-            {
-                return BadRequest("Invlid user Credintials");
-            }
-            return Ok(
-                new {
-                    message = "log in success", 
-                    data = new {
-                        access_token = secureKey,
-                        user = mapper.Map<UserDto>(user)
-                    } 
-                });
-        }
     }
 }
