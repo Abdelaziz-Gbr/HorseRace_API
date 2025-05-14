@@ -10,13 +10,13 @@ namespace HorseRace_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IAuthService authService;
         private readonly IAuthRepository authRepository;
         private readonly IMapper mapper;
 
-        public AuthController(IAuthService authService, IAuthRepository authRepository, IMapper mapper)
+        public UsersController(IAuthService authService, IAuthRepository authRepository, IMapper mapper)
         {
             this.authService = authService;
             this.authRepository = authRepository;
