@@ -39,17 +39,29 @@ namespace HorseRace_API.Controllers
             return Ok(users);
         }
 
+        [HttpPut]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> UpdateUser([FromBody] UpdateUser updateUser)
+        {
+            return BadRequest();
+        }
+
 
         [HttpPost]
         [Route("Login")]
         public async Task<ActionResult> LogUserIn([FromBody] UserCredintials userCredintials)
         {
-            var key = await authService.GetUserTokenAsync(userCredintials);
-            if (key == null)
+            var secureKey = await authService.GetUserTokenAsync(userCredintials);
+            if (secureKey == null)
             {
                 return BadRequest("Invlid user Credintials");
             }
-            return Ok(key);
+            return Ok(
+                new {
+                    message = "log in success", 
+                    data = new {access_token = secureKey
+                    } 
+                });
         }
     }
 }

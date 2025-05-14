@@ -36,9 +36,9 @@ namespace HorseRace_API.Repositories
             return user;
         }
 
-        public Task<List<User>> getUsersAsync()
+        public async Task<List<User>> getUsersAsync()
         {
-            throw new NotImplementedException();
+            return await authDb.Users.ToListAsync();
         }
 
         public Task<User> UpdateUserAsync(User user)
